@@ -72,6 +72,27 @@ public class Field {
         return false;
     }
 
+    public int attack(int x, int y) {
+        if (areaShips.get(x) != null && areaShips.get(x) == y) {
+            for (int j = 1; j <= 4; j++) {
+                for (Ship i : ships.get(j)) {
+                    if (i.checkHit(x, y)) {
+                        if (i.isSunk()) {
+                            ships.get(j).remove(i);
+                            countShip--;
+                            return 3;
+                        }
+                        return 2;
+                    }
+                }
+            }
+        }
+        if (mines.get(x) != null && mines.get(x) == y) {
+            return 1;
+        }
+        return 0;
+    }
+
     public ArrayList<ArrayList<ArrayList<Integer>>> checkMineTarantila(int x, int y) {
         ArrayList<ArrayList<Integer>> resMines = new ArrayList<>();
         ArrayList<ArrayList<Integer>> resShips = new ArrayList<>();
