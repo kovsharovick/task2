@@ -4,22 +4,51 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de25f9b6-7fac-4646-80bc-994b0572ff4e" name="Changes" comment="Init" />
+    <list default="true" id="de25f9b6-7fac-4646-80bc-994b0572ff4e" name="Changes" comment="Init">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/Mine.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/Ships.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/BattleshipGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/BattleshipGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/Field.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/Field.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/MineTarantila.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/MineSweeper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/vsu/cs/yesikov/seabattle/Ship.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Enum" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2qIqZsqwHFJK9KKvXKLs5caXF2e" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.BattleshipGame.executor": "Run",
     "Application.Game.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "seabattle",
-    "last_opened_file_path": "D:/Java, C++, Python/Java/task2",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Vova/Downloads/Task2",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0"
@@ -32,6 +61,7 @@
       <recent name="D:\Java, C++, Python\Java\task2\src\main" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -41,7 +71,22 @@
       <option name="project" value="LOCAL" />
       <updated>1734300537149</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Init">
+      <option name="closed" value="true" />
+      <created>1734300698614</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1734300698614</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="de25f9b6-7fac-4646-80bc-994b0572ff4e" name="Changes" comment="Init" />
+      <created>1734360498286</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1734360498286</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

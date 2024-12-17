@@ -4,19 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Field {
-    private int countShip = 0;
+    private int countPlacedShip = 0;
     private final HashMap<Integer, ArrayList<Ship>> ships = new HashMap<>();
     private final HashMap<Integer, Integer> mines = new HashMap<>();
-    private int countMines = 0;
-    private int countMinTar = 0;
-    private int countSub;
+    private final HashMap<Integer, Integer> minesSweeper = new HashMap<>();
     private final HashMap<Integer, Integer> areaPoint = new HashMap<>();
     private final HashMap<Integer, Integer> areaShips = new HashMap<>();
 
-    public Field(int countMines, int countSub, int countMinTar) {
-        this.countMines = countMines;
-        this.countSub = countSub;
-        this.countMinTar = countMinTar;
+    public Field(int countMines, int countMinSweeper) {
         ships.put(1, new ArrayList<>());
         ships.put(2, new ArrayList<>());
         ships.put(3, new ArrayList<>());
@@ -29,7 +24,7 @@ public class Field {
         for (int xi : ship.getX()) {
             for (int yi : ship.getY()) {
                 if ((areaPoint.containsKey((xi * 10) + yi) && areaPoint.get((xi * 10) + yi) == yi)
-                    || (areaShips.containsKey((xi * 10) + yi) && areaShips.get((xi * 10) + yi) == yi)) {
+                        || (areaShips.containsKey((xi * 10) + yi) && areaShips.get((xi * 10) + yi) == yi)) {
                     canPlace = false;
                     break;
                 }
@@ -41,7 +36,7 @@ public class Field {
 
         if (canPlace) {
             ships.get(size).add(ship);
-            countShip++;
+            countPlacedShip++;
             for (int xi = ship.getAreaX()[0]; xi <= ship.getAreaX()[1]; xi++) {
                 for (int yi = ship.getAreaY()[0]; yi <= ship.getAreaY()[1]; yi++) {
                     areaPoint.put(((xi * 10) + yi), yi);
@@ -60,14 +55,33 @@ public class Field {
     }
 
     public boolean placeMine(int x, int y) {
-        if (mines.size() < countMines) {
-            if (!areaShips.containsKey((x * 10) + y) || areaShips.get((x * 10) + y) != y) {
-                mines.put(((x * 10) + y), y);
-                areaShips.put(((x * 10) + y), y);
-                return true;
-            } else {
-                return false;
+        Mine mine = new Mine(x, y);
+        boolean canPlace = !((areaPoint.containsKey((x * 10) + y) && areaPoint.get((x * 10) + y) == y)
+                || (mines.containsKey((x * 10) + y) && mines.get((x * 10) + y) == y));
+        if (canPlace) {
+            mines.put(((x * 10) + y), y);
+            for (int xi = mine.getAreaX()[0]; xi <= mine.getAreaX()[1]; xi++) {
+                for (int yi = mine.getAreaY()[0]; yi <= mine.getAreaY()[1]; yi++) {
+                    areaPoint.put(((xi * 10) + yi), yi);
+                }
             }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean placeMineSweeper(int x, int y) {
+        MineSweeper mineSweeper = new MineSweeper(x, y);
+        boolean canPlace = !((areaPoint.containsKey((x * 10) + y) && areaPoint.get((x * 10) + y) == y)
+                || (minesSweeper.containsKey((x * 10) + y) && minesSweeper.get((x * 10) + y) == y));
+        if (canPlace) {
+            minesSweeper.put(((x * 10) + y), y);
+            for (int xi = mineSweeper.getAreaX()[0]; xi <= mineSweeper.getAreaX()[1]; xi++) {
+                for (int yi = mineSweeper.getAreaY()[0]; yi <= mineSweeper.getAreaY()[1]; yi++) {
+                    areaPoint.put(((xi * 10) + yi), yi);
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -79,7 +93,7 @@ public class Field {
                     if (i.checkHit(x, y)) {
                         if (i.isSunk()) {
                             ships.get(j).remove(i);
-                            countShip--;
+                            countPlacedShip--;
                             return 3;
                         }
                         return 2;
@@ -93,7 +107,7 @@ public class Field {
         return 0;
     }
 
-    public ArrayList<ArrayList<ArrayList<Integer>>> checkMineTarantila(int x, int y) {
+    public ArrayList<ArrayList<ArrayList<Integer>>> checkMineSweeper(int x, int y) {
         ArrayList<ArrayList<Integer>> resMines = new ArrayList<>();
         ArrayList<ArrayList<Integer>> resShips = new ArrayList<>();
         ArrayList<ArrayList<ArrayList<Integer>>> res = new ArrayList<>();
@@ -120,11 +134,11 @@ public class Field {
     }
 
     public boolean allShipsSunk() {
-        return countShip > 0;
+        return countPlacedShip > 0;
     }
 
-    public int getCountShip() {
-        return countShip;
+    public int getCountPlacedShip() {
+        return countPlacedShip;
     }
 
     public int getCountShip1() {
@@ -147,11 +161,7 @@ public class Field {
         return mines.size();
     }
 
-    public int getCountSub() {
-        return countSub;
-    }
-
-    public int getCountMinTar() {
-        return countMinTar;
+    public int getCountMinSweeper() {
+        return minesSweeper.size();
     }
 }

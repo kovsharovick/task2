@@ -33,8 +33,8 @@ public class Ship {
         for (int i = 0; i < length; i++) {
             if (this.x[i] == x && this.y[i] == y) {
                 hits++;
-                this.x[i] = -1; // mark as hit
-                this.y[i] = -1; // mark as hit
+                this.x[i] = -1;
+                this.y[i] = -1;
                 return true;
             }
         }

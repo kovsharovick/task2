@@ -7,9 +7,9 @@ public class Game {
     private final Field player2Field;
     private int currentPlayer;
 
-    public Game(int countMines, int countSub, int countMinTar) {
-        player1Field = new Field(countMines, countSub, countMinTar);
-        player2Field = new Field(countMines, countSub, countMinTar);
+    public Game(int countMines, int countMinSweeper) {
+        player1Field = new Field(countMines, countMinSweeper);
+        player2Field = new Field(countMines, countMinSweeper);
         currentPlayer = 1;
     }
 
@@ -22,9 +22,9 @@ public class Game {
 
     public int countOfShipAll(int player) {
         if (player == 1) {
-            return player1Field.getCountShip();
+            return player1Field.getCountPlacedShip();
         }
-        return player2Field.getCountShip();
+        return player2Field.getCountPlacedShip();
     }
 
     public int countOfShip1(int player) {
@@ -55,18 +55,11 @@ public class Game {
         return player2Field.getCountShip4();
     }
 
-    public int countOfMineTar(int player) {
+    public int countOfMineSweeper(int player) {
         if (player == 1) {
-            return player1Field.getCountMinTar();
+            return player1Field.getCountMinSweeper();
         }
-        return player2Field.getCountMinTar();
-    }
-
-    public int countOfSub(int player) {
-        if (player == 1) {
-            return player1Field.getCountSub();
-        }
-        return player2Field.getCountSub();
+        return player2Field.getCountMinSweeper();
     }
 
     public boolean placeShip(int size, int x, int y, boolean horizontal) {
@@ -89,6 +82,14 @@ public class Game {
             return false;
         }
         return currentField.placeMine(x, y);
+    }
+
+    public boolean placeMineSweeper(int x, int y) {
+        Field currentField = (currentPlayer == 1) ? player1Field : player2Field;
+        if (x < 0 || y < 0 || x > 9 || y > 9) {
+            return false;
+        }
+        return currentField.placeMineSweeper(x, y);
     }
 
     public int attack(int x, int y) {
@@ -130,7 +131,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        Game game = new Game(3, 3, 3);
+        Game game = new Game(3, 3);
         game.startGame();
     }
 
