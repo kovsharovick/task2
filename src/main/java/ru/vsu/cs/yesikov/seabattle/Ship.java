@@ -20,9 +20,8 @@ public class Ship {
         }
 
         xArea = new int[]{Math.max(x - 1, 0), Math.min(horizontal ? x + 1 : x + length, 9)};
-        //xArea = new int[]{Math.max(x - 1, 0), Math.min(horizontal ? x + length + 1: x + 1, 9)};
         yArea = new int[]{Math.max(y - 1, 0), Math.min(horizontal ? y + length : y + 1, 9)};
-        //yArea = new int[]{Math.max(y - 1, 0), Math.min(horizontal ? y + 1 : y + length + 1, 9)};
+
     }
 
     public int getLength() {
@@ -33,8 +32,6 @@ public class Ship {
         for (int i = 0; i < length; i++) {
             if (this.x[i] == x && this.y[i] == y) {
                 hits++;
-                this.x[i] = -1;
-                this.y[i] = -1;
                 return true;
             }
         }
@@ -60,4 +57,5 @@ public class Ship {
     public int[] getY() {
         return y;
     }
+
 }

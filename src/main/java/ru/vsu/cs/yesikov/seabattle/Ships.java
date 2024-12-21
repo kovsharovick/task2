@@ -6,5 +6,7 @@ public enum Ships {
     SHIP3,
     SHIP4,
     MINE,
-    SWEEPER
+    SWEEPER,
+    DELMINE,
+    DELSHIP
 }

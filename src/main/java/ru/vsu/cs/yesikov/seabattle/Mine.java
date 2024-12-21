@@ -10,4 +10,5 @@ public class Mine extends Ship {
     public boolean checkHit(int x, int y) {
         return this.getX()[0] == x && this.getY()[0] == y;
     }
+
 }

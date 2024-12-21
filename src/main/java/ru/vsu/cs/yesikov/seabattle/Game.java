@@ -2,15 +2,20 @@ package ru.vsu.cs.yesikov.seabattle;
 
 import java.util.Scanner;
 
+import static ru.vsu.cs.yesikov.seabattle.Attack.NOTHING;
+import static ru.vsu.cs.yesikov.seabattle.Attack.UNREAL;
+
 public class Game {
     private final Field player1Field;
     private final Field player2Field;
     private int currentPlayer;
+    private final int size;
 
-    public Game(int countMines, int countMinSweeper) {
+    public Game(int countMines, int countMinSweeper, int size) {
         player1Field = new Field(countMines, countMinSweeper);
         player2Field = new Field(countMines, countMinSweeper);
         currentPlayer = 1;
+        this.size = size;
     }
 
     public int countOfMines(int player) {
@@ -92,21 +97,38 @@ public class Game {
         return currentField.placeMineSweeper(x, y);
     }
 
-    public int attack(int x, int y) {
+    public boolean deleteMine(int x, int y) {
+        Field currentField = (currentPlayer == 1) ? player1Field : player2Field;
+        if (x < 0 || y < 0 || x > 9 || y > 9) {
+            return false;
+        }
+        return currentField.deleteMine(x, y, size);
+    }
+
+    public Attack deleteShip(int x, int y, int currentPlayer) {
+        Field currentField = (currentPlayer == 2) ? player1Field : player2Field;
+        if (x < 0 || y < 0 || x > 9 || y > 9) {
+            return UNREAL;
+        }
+        return currentField.deleteShip(x, y, size);
+    }
+
+    public Attack attack(int x, int y, int size) {
         Field opponentField = (currentPlayer == 1) ? player2Field : player1Field;
         if (x < 0 || y < 0 || x > 9 || y > 9) {
-            return -1;
+            return NOTHING;
         }
-        int res = opponentField.attack(x, y);
-        if (res > 1) {
-            switchPlayer();
-            return 1;
-        }
-        if (res == 1) {
-            switchPlayer();
-            return 2;
-        }
-        return 0;
+        return opponentField.attack(x, y, size);
+    }
+
+    public int[] getKillArea(int currentPlayer) {
+        Field opponentField = (currentPlayer == 1) ? player2Field : player1Field;
+        return opponentField.getKillArea();
+    }
+
+    public int[] getKillShip() {
+        Field opponentField = (currentPlayer == 1) ? player2Field : player1Field;
+        return opponentField.getKillShip();
     }
 
     public void switchPlayer() {
@@ -123,7 +145,7 @@ public class Game {
             System.out.println("Current Player: " + currentPlayer);
             int x = scanner.nextInt();
             int y = scanner.nextInt();
-            attack(x, y);
+            attack(x, y, size);
             switchPlayer();
         }
         System.out.println("Player " + currentPlayer + " wins!");
@@ -131,7 +153,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        Game game = new Game(3, 3);
+        Game game = new Game(3, 3, 10);
         game.startGame();
     }
 
