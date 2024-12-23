@@ -11,9 +11,9 @@ public class Game {
     private int currentPlayer;
     private final int size;
 
-    public Game(int countMines, int countMinSweeper, int size) {
-        player1Field = new Field(countMines, countMinSweeper);
-        player2Field = new Field(countMines, countMinSweeper);
+    public Game(int size) {
+        player1Field = new Field(size);
+        player2Field = new Field(size);
         currentPlayer = 1;
         this.size = size;
     }
@@ -70,11 +70,11 @@ public class Game {
     public boolean placeShip(int size, int x, int y, boolean horizontal) {
         Field currentField = (currentPlayer == 1) ? player1Field : player2Field;
         if (horizontal) {
-            if (x < 0 || y < 0 || x > 9 || y > 10 - size) {
+            if (x < 0 || y < 0 || x > this.size - 1 || y > this.size - size) {
                 return false;
             }
         } else {
-            if (x < 0 || y < 0 || x > 10 - size || y > 9) {
+            if (x < 0 || y < 0 || x > this.size - size || y > this.size - 1) {
                 return false;
             }
         }
@@ -83,7 +83,7 @@ public class Game {
 
     public boolean placeMine(int x, int y) {
         Field currentField = (currentPlayer == 1) ? player1Field : player2Field;
-        if (x < 0 || y < 0 || x > 9 || y > 9) {
+        if (x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1) {
             return false;
         }
         return currentField.placeMine(x, y);
@@ -91,7 +91,7 @@ public class Game {
 
     public boolean placeMineSweeper(int x, int y) {
         Field currentField = (currentPlayer == 1) ? player1Field : player2Field;
-        if (x < 0 || y < 0 || x > 9 || y > 9) {
+        if (x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1) {
             return false;
         }
         return currentField.placeMineSweeper(x, y);
@@ -99,26 +99,26 @@ public class Game {
 
     public boolean deleteMine(int x, int y) {
         Field currentField = (currentPlayer == 1) ? player1Field : player2Field;
-        if (x < 0 || y < 0 || x > 9 || y > 9) {
+        if (x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1) {
             return false;
         }
-        return currentField.deleteMine(x, y, size);
+        return currentField.deleteMine(x, y);
     }
 
     public Attack deleteShip(int x, int y, int currentPlayer) {
         Field currentField = (currentPlayer == 2) ? player1Field : player2Field;
-        if (x < 0 || y < 0 || x > 9 || y > 9) {
+        if (x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1) {
             return UNREAL;
         }
-        return currentField.deleteShip(x, y, size);
+        return currentField.deleteShip(x, y);
     }
 
-    public Attack attack(int x, int y, int size) {
+    public Attack attack(int x, int y) {
         Field opponentField = (currentPlayer == 1) ? player2Field : player1Field;
-        if (x < 0 || y < 0 || x > 9 || y > 9) {
+        if (x < 0 || y < 0 || x > this.size - 1 || y > this.size - 1) {
             return NOTHING;
         }
-        return opponentField.attack(x, y, size);
+        return opponentField.attack(x, y);
     }
 
     public int[] getKillArea(int currentPlayer) {
@@ -137,24 +137,6 @@ public class Game {
 
     public boolean checkWin() {
         return player1Field.allShipsSunk() || player2Field.allShipsSunk();
-    }
-
-    public void startGame() {
-        Scanner scanner = new Scanner(System.in);
-        while (!checkWin()) {
-            System.out.println("Current Player: " + currentPlayer);
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
-            attack(x, y, size);
-            switchPlayer();
-        }
-        System.out.println("Player " + currentPlayer + " wins!");
-        scanner.close();
-    }
-
-    public static void main(String[] args) {
-        Game game = new Game(3, 3, 10);
-        game.startGame();
     }
 
     public int getCurrentPlayer() {

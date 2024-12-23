@@ -39,10 +39,10 @@ public class BattleshipGame extends Application {
     private boolean horizontal = true;
     private final int countOfMine = 2;
     private final int countOfMineSweeper = 1;
-    private final int countOfShip1 = 2;
-    private final int countOfShip2 = 0;
-    private final int countOfShip3 = 0;
-    private final int countOfShip4 = 0;
+    private final int countOfShip1 = 4;
+    private final int countOfShip2 = 3;
+    private final int countOfShip3 = 2;
+    private final int countOfShip4 = 1;
 
 
     public static void main(String[] args) {
@@ -51,7 +51,7 @@ public class BattleshipGame extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        game = new Game(countOfMine, countOfMineSweeper, size);
+        game = new Game(size);
         primaryStage.setTitle("Battleship Game");
         VBox root = new VBox(10);
         root.setPrefSize(500, 500);
@@ -194,7 +194,7 @@ public class BattleshipGame extends Application {
         Button button;
         int[] redArea;
         int maxX, maxY, minX, minY;
-        switch (game.attack(x, y, size)) {
+        switch (game.attack(x, y)) {
             case UNREAL:
                 messageLabel2.setText("Вы не можете так походить!");
                 break;
@@ -422,7 +422,7 @@ public class BattleshipGame extends Application {
     }
 
     private void deleteMine(GridPane playerGrid, GridPane playerGridForAttack, int x, int y) {
-        if (game.deleteMine(x, y)) {
+        if (game.countOfMines(game.getCurrentPlayer() == 1 ? 2 : 1) != 0 && game.deleteMine(x, y)) {
             int[] redArea = game.getKillArea(game.getCurrentPlayer() == 2 ? 1 : 2);
             int minX = Math.min(redArea[0], redArea[1]);
             int maxX = Math.max(redArea[0], redArea[1]);
@@ -447,8 +447,16 @@ public class BattleshipGame extends Application {
             game.switchPlayer();
             start = true;
             attack = false;
-        } else {
+        } else if (game.countOfMines(game.getCurrentPlayer() == 1 ? 2 : 1) == 0) {
             messageLabel2.setText("Недоступные координаты попробуй ещё раз.");
+        } else {
+            messageLabel2.setText("Разминировать больше нечего! ");
+            buttonsVBox.getChildren().clear();
+            buttonChangePlayer.setText("Завершить ход. Игрок " + game.getCurrentPlayer() + ".");
+            buttonsVBox.getChildren().add(buttonChangePlayer);
+            game.switchPlayer();
+            start = true;
+            attack = false;
         }
     }
 
