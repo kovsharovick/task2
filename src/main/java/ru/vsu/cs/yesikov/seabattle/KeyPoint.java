@@ -1,27 +1,27 @@
 package ru.vsu.cs.yesikov.seabattle;
 
+import java.util.Objects;
+
 public class KeyPoint {
 
     private final int x;
     private final int y;
-    private final int size;
 
     public KeyPoint(int x, int y, int size) {
         this.x = x;
         this.y = y;
-        this.size = size;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj.getClass() == this.getClass()) {
-            return ((KeyPoint) obj).x == this.x && ((KeyPoint) obj).y == this.y;
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KeyPoint point = (KeyPoint) o;
+        return x == point.x && y == point.y;
     }
 
     @Override
     public int hashCode() {
-        return (x * size) + y;
+        return Objects.hash(x, y);
     }
 }
