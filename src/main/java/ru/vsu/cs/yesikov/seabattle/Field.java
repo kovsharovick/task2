@@ -11,11 +11,11 @@ public class Field {
     private final int[] currentKillArea = new int[4];
     private int[] currentKill;
     private final HashMap<Integer, ArrayList<Ship>> ships = new HashMap<>();
-    private final HashMap<Integer, Mine> mines = new HashMap<>();
-    private final HashMap<Integer, MineSweeper> minesSweeper = new HashMap<>();
-    private final HashMap<Integer, Integer> areaPoint = new HashMap<>();
-    private final HashMap<Integer, Integer> areaShips = new HashMap<>();
-    private final HashMap<Integer, Integer> areaAttack = new HashMap<>();
+    private final HashMap<KeyPoint, Mine> mines = new HashMap<>();
+    private final HashMap<KeyPoint, MineSweeper> minesSweeper = new HashMap<>();
+    private final HashMap<KeyPoint, Integer> areaPoint = new HashMap<>();
+    private final HashMap<KeyPoint, Integer> areaShips = new HashMap<>();
+    private final HashMap<KeyPoint, Integer> areaAttack = new HashMap<>();
 
     public Field(int size) {
         ships.put(1, new ArrayList<>());
@@ -35,11 +35,11 @@ public class Field {
 
     public boolean placeShip(int size, int x, int y, boolean horizontal) {
         Ship ship = new Ship(size, x, y, horizontal);
-        int key;
+        KeyPoint key;
         boolean canPlace = true;
         for (int xi : ship.getX()) {
             for (int yi : ship.getY()) {
-                key = getKey(xi, yi);
+                key = new KeyPoint(xi, yi, this.size);
                 if ((areaPoint.containsKey(key) && areaPoint.get(key) == yi)
                         || (areaShips.containsKey(key) && areaShips.get(key) == yi)) {
                     canPlace = false;
@@ -56,13 +56,13 @@ public class Field {
             countPlacedShip++;
             for (int xi = ship.getAreaX()[0]; xi <= ship.getAreaX()[1]; xi++) {
                 for (int yi = ship.getAreaY()[0]; yi <= ship.getAreaY()[1]; yi++) {
-                    areaPoint.put(getKey(xi, yi), yi);
+                    areaPoint.put(new KeyPoint(xi, yi, this.size), yi);
                 }
             }
 
             for (int xi : ship.getX()) {
                 for (int yi : ship.getY()) {
-                    areaShips.put(getKey(xi, yi), yi);
+                    areaShips.put(new KeyPoint(xi, yi, this.size), yi);
                 }
             }
             return true;
@@ -73,14 +73,14 @@ public class Field {
 
     public boolean placeMine(int x, int y) {
         Mine mine = new Mine(x, y);
-        int key = getKey(x, y);
+        KeyPoint key = new KeyPoint(x, y, size);
         boolean canPlace = !((areaPoint.containsKey(key) && areaPoint.get(key) == y)
                 || (mines.containsKey(key) && mines.get(key).getY()[0] == y));
         if (canPlace) {
             mines.put(key, mine);
             for (int xi = mine.getAreaX()[0]; xi <= mine.getAreaX()[1]; xi++) {
                 for (int yi = mine.getAreaY()[0]; yi <= mine.getAreaY()[1]; yi++) {
-                    areaPoint.put(getKey(xi, yi), yi);
+                    areaPoint.put(new KeyPoint(xi, yi, size), yi);
                 }
             }
             return true;
@@ -90,14 +90,14 @@ public class Field {
 
     public boolean placeMineSweeper(int x, int y) {
         MineSweeper mineSweeper = new MineSweeper(x, y);
-        int key = getKey(x, y);
+        KeyPoint key = new KeyPoint(x, y, size);
         boolean canPlace = !((areaPoint.containsKey(key) && areaPoint.get(key) == y)
                 || (minesSweeper.containsKey(key) && minesSweeper.get(key).getY()[0] == y));
         if (canPlace) {
             minesSweeper.put(key, mineSweeper);
             for (int xi = mineSweeper.getAreaX()[0]; xi <= mineSweeper.getAreaX()[1]; xi++) {
                 for (int yi = mineSweeper.getAreaY()[0]; yi <= mineSweeper.getAreaY()[1]; yi++) {
-                    areaPoint.put(getKey(xi, yi), yi);
+                    areaPoint.put(new KeyPoint(xi, yi, size), yi);
                 }
             }
             return true;
@@ -106,7 +106,7 @@ public class Field {
     }
 
     public Attack attack(int x, int y) {
-        int key = getKey(x, y);
+        KeyPoint key = new KeyPoint(x, y, size);
         if (areaAttack.containsKey(key) && areaAttack.get(key) == y) {
             return UNREAL;
         }
@@ -123,7 +123,7 @@ public class Field {
                             currentKillArea[3] = i.getAreaY()[1];
                             for (int xi = i.getAreaX()[0]; xi <= i.getAreaX()[1]; xi++) {
                                 for (int yi = i.getAreaY()[0]; yi <= i.getAreaY()[1]; yi++) {
-                                    areaAttack.put(getKey(xi, yi), yi);
+                                    areaAttack.put(new KeyPoint(xi, yi, size), yi);
                                 }
                             }
                             int[] shipX = i.getX();
@@ -147,7 +147,7 @@ public class Field {
             currentKillArea[3] = mines.get(key).getAreaY()[1];
             for (int xi = mines.get(key).getAreaX()[0]; xi <= mines.get(key).getAreaX()[1]; xi++) {
                 for (int yi = mines.get(key).getAreaY()[0]; yi <= mines.get(key).getAreaY()[1]; yi++) {
-                    areaAttack.put(getKey(xi, yi), yi);
+                    areaAttack.put(new KeyPoint(xi, yi, size), yi);
                 }
             }
             return MINE;
@@ -159,7 +159,7 @@ public class Field {
             currentKillArea[3] = minesSweeper.get(key).getAreaY()[1];
             for (int xi = minesSweeper.get(key).getAreaX()[0]; xi <= minesSweeper.get(key).getAreaX()[1]; xi++) {
                 for (int yi = minesSweeper.get(key).getAreaY()[0]; yi <= minesSweeper.get(key).getAreaY()[1]; yi++) {
-                    areaAttack.put(getKey(xi, yi), yi);
+                    areaAttack.put(new KeyPoint(xi, yi, size), yi);
                 }
             }
             return SWEEPER;
@@ -169,7 +169,7 @@ public class Field {
     }
 
     public boolean deleteMine(int x, int y) {
-        int key = getKey(x, y);
+        KeyPoint key = new KeyPoint(x, y, size);
         if (mines.containsKey(key) && mines.get(key).getY()[0] == y) {
             attack(x, y);
             return true;
@@ -178,7 +178,7 @@ public class Field {
     }
 
     public Attack deleteShip(int x, int y) {
-        int key = getKey(x, y);
+        KeyPoint key = new KeyPoint(x, y, size);
         if (areaShips.containsKey(key) && areaShips.get(key) == y) {
             return attack(x, y);
         }
